@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {BASE_URL, SERVER_URL} from "../Values";
+import { BASE_URL, SERVER_URL_WITH_HTTP } from "../Values";
 // import SERVER_URL from "../Values";
 
 interface Props {
@@ -42,7 +42,7 @@ class CreateChannelPage extends React.Component<Props, States> {
 
     createChannel(event: React.FormEvent<EventTarget>) {
         event.preventDefault()
-        const url = `${SERVER_URL}/api.v1.qask/channel/host/create`
+        const url = `${SERVER_URL_WITH_HTTP}/api.v1.qask/channel/host/create`
         const postBody = {
             name: this.state.channelNameInput,
             durationInMinute: this.state.channelDurationInput,
@@ -70,9 +70,10 @@ class CreateChannelPage extends React.Component<Props, States> {
         return (
             <div className="flex flex-col w-screen h-screen">
                 <form className="flex flex-col m-auto w-1/2 place-items-center space-y-10" onSubmit={this.createChannel}>
+                    <p>Create a session</p>
                     <input className="form-input" type="text" name="name" onChange={e => this.setState({ channelNameInput: e.target.value })} placeholder="Name" required />
                     <input className="form-input" type="text" name="description" onChange={e => this.setState({ channelDescriptionInput: e.target.value })} placeholder="Description" required />
-                    <input className="form-input" type="number" name="duration-in-minutes" onChange={e => this.setState({ channelDurationInput: parseInt(e.target.value) })} placeholder="Duration in minutes" required />
+                    <input className="form-input" type="number" name="duration-in-minutes" onChange={e => this.setState({ channelDurationInput: parseInt(e.target.value) })} placeholder="Duration of session (in minutes)" required />
                     <input className="submit-btn mt-10" type="submit" value="Submit" />
                     <div className={(this.state.presenterLink != "" ? 'visible' : 'hidden')}>
                         <div className="text-xs"><span>Presenter link:  </span>{this.state.presenterLink}</div>

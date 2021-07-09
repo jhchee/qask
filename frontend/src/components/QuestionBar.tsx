@@ -4,7 +4,7 @@ import { faAngleUp, faPlus, faCheck, faCross, faTimes } from "@fortawesome/free-
 import Action from "../types/Action";
 import User from "../types/User";
 import Status from "../types/Status";
-import { SERVER_URL} from "../Values";
+import { SERVER_URL_WITH_HTTP} from "../Values";
 
 interface Props {
   content: string,
@@ -40,7 +40,7 @@ class QuestionBar extends React.Component<Props, States> {
 
   handleAction(e: React.FormEvent<EventTarget>, action: Action) {
     e.preventDefault()
-    const url = `${SERVER_URL}/api.v1.qask/question/${this.props.user}/edit`
+    const url = `${SERVER_URL_WITH_HTTP}/api.v1.qask/question/${this.props.user}/edit`
 
     if (action === Action.VOTE_UP) {
       this.setState({ voted: true })

@@ -1,5 +1,5 @@
 import React from "react";
-import { SERVER_URL } from "../Values";
+import { SERVER_URL_WITH_HTTP } from "../Values";
 
 interface Props {
   token: string,
@@ -22,7 +22,7 @@ class QuestionForm extends React.Component<Props, State> {
 
   handleSubmit(e: React.FormEvent<EventTarget>) {
     e.preventDefault()
-    const url = `${SERVER_URL}/api.v1.qask/question/audience/create`
+    const url = `${SERVER_URL_WITH_HTTP}/api.v1.qask/question/audience/create`
 
     const postBody = {
       token: this.props.token,
