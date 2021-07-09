@@ -18,3 +18,9 @@ cd backend && ./gradlew bootRun
 ```
 
 ## Demo
+Visit 127.0.0.1:3000 to create a session. Fill in session name, description and duration and you'll get presenter and audience link.
+![create session](demo/create_session.png)
+With audience link, you can post and upvote a question.
+![questioner_view](demo/questioner_view.png)
+The host using the presenter link can queue a posted question and mark a questin as answred
+![host_view](demo/host_view.png)
