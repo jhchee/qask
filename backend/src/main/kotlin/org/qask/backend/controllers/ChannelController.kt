@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api.v1.qask/channel")
-@CrossOrigin(origins = arrayOf("http://localhost:3000"))
+@CrossOrigin(origins = arrayOf("http://127.0.0.1:3000", "http://localhost:3000"))
 class ChannelRestController(
     val channelService: IReactiveChannelService,
 ) {

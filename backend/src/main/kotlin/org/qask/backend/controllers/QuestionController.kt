@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 // if you have question, ask!
 @Controller
 @MessageMapping("api.v1.qask")
-@CrossOrigin(origins = arrayOf("http://localhost:3000"))
+@CrossOrigin(origins = arrayOf("http://127.0.0.1:3000", "http://localhost:3000"))
 class WebsocketResource(val questionService: IReactiveQuestionService) {
 
     @MessageMapping("stream/{token}")
@@ -37,7 +37,7 @@ class WebsocketResource(val questionService: IReactiveQuestionService) {
 
 @RestController
 @RequestMapping("api.v1.qask/question")
-@CrossOrigin(origins = arrayOf("http://localhost:3000"))
+@CrossOrigin(origins = arrayOf("http://127.0.0.1:3000"))
 class QuestionRestResource(
     val questionService: IReactiveQuestionService,
 ) {
