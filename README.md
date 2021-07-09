@@ -8,7 +8,7 @@ Rsocket is designed to be an efficient counterpart of HTTP/2. It is a binary pro
 
 The entire project also fully leverages the non-blocking, Reactor API to deal with IO request in non-blocking way. It is deeply integrated with Kotlin coroutines for writing imperative (much more understandle) asynchronous code.
 
-The webclient is written in Typesript, since the documentation on type annotations is really lacking, hopefully this can serve as good reference who wish to write the Rsocket client in Typescript. You can refer the type declaration in `QuestionPage.tsx`.
+The webclient is written in Typesript, since the documentation on Rsocket type annotations is really lacking, hopefully this can serve as good reference to who intends to write the Rsocket client in Typescript. You can refer the type declaration in `QuestionPage.tsx`.
 
 ## Run the project
 ``` bash
