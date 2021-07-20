@@ -10,11 +10,19 @@ The entire project also fully leverages the non-blocking, Reactor API to deal wi
 
 The webclient is written in Typesript, since the documentation on Rsocket type annotations is really lacking, hopefully this can serve as good reference to who intends to write the Rsocket client in Typescript. You can refer the type declaration in `QuestionPage.tsx`.
 
+### **NEW** Insincere question filtering (Proof of concept)
+The project also features spam filtering mechanism by using a NLP model from [here](https://www.kaggle.com/wowfattie/3rd-place). Each posted question is loaded onto a kafka queue and be batchly inferred by the model. This feature is only a proof of concept, the model can be further fine-tuned for speed and accuracy. The relevant codes reside within the `spam-filter` folder.
+
+![host_view](demo/spam_filter.png)
+
+
 ## Run the project
 ``` bash
 cd frontend && yarn start
 
 cd backend && ./gradlew bootRun
+
+cd spam-filter && python3 infer.py
 ```
 
 ## Demo
@@ -22,5 +30,5 @@ Visit 127.0.0.1:3000 to create a session. Fill in session name, description and 
 ![create session](demo/create_session.png)
 With audience link, you can post and upvote a question.
 ![questioner_view](demo/questioner_view.png)
-The host using the presenter link can queue a posted question and mark a questin as answred
+The host using the presenter link can queue a posted question and mark a question as answered
 ![host_view](demo/host_view.png)
