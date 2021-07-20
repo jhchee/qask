@@ -14,6 +14,7 @@ data class Question(
     val channelId: String, // reference to channel
     var isDeleted: Boolean = false,
     var isHidden: Boolean = false,
+    var isInsincere: Boolean = false,
     var status: String = Status.DEFAULT.name,
     @Id val id: String? = null,
 )

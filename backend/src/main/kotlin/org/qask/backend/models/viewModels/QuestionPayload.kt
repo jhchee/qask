@@ -10,7 +10,7 @@ data class QuestionPayload(
     val likeCount: Int = 0,
     val sent: Instant,
     val isDeleted: Boolean = false,
-    val isHidden: Boolean = false,
+    val isInsincere: Boolean = false,
     val id: String? = null,
     val status: String = Status.DEFAULT.name
 )

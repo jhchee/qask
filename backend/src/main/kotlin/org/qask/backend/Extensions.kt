@@ -15,9 +15,17 @@ fun Question.toPayload(): QuestionPayload {
         questionerName = questionerName,
         likeCount = likeCount,
         isDeleted = isDeleted,
-        isHidden = isHidden,
+        isInsincere = isInsincere,
         sent = sent,
         id = id,
+    )
+}
+
+fun Question.toInput(): QuestionInput {
+    return QuestionInput(
+        question = content,
+        channelId = channelId,
+        id = id!!
     )
 }
 

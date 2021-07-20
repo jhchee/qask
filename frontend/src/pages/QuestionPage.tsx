@@ -112,14 +112,15 @@ class QuestionPage extends React.Component<Props, State> {
     return (
       <div>
         <div className="flex flex-col place-items-center space-y-4 bg-green-400 py-5">
-          {this.state.questions.filter(question => question.status === Status.QUEUED && !question.isDeleted).map(({
+          {this.state.questions
+          .filter(question => question.status === Status.QUEUED && !question.isDeleted).map(({
             content,
             questionerName,
             likeCount,
             sent,
             status,
-            isHidden,
             isDeleted,
+            isInsincere,
             id,
           }) => (
             <QuestionBar
@@ -131,8 +132,8 @@ class QuestionPage extends React.Component<Props, State> {
               id={id}
               token={this.state.token}
               user={this.state.user}
-              isHidden={isHidden}
               isDeleted={isDeleted}
+              isInsincere={isInsincere}
               status={status}
             />
           ))}
@@ -145,7 +146,7 @@ class QuestionPage extends React.Component<Props, State> {
             likeCount,
             sent,
             status,
-            isHidden,
+            isInsincere,
             isDeleted,
             id,
           }) => (
@@ -158,8 +159,8 @@ class QuestionPage extends React.Component<Props, State> {
               id={id}
               token={this.state.token}
               user={this.state.user}
-              isHidden={isHidden}
               isDeleted={isDeleted}
+              isInsincere={isInsincere}
               status={status}
             />
           ))}</div>

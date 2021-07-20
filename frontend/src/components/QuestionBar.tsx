@@ -1,10 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleUp, faPlus, faCheck, faCross, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faAngleUp, faPlus, faCheck, faCross, faTimes, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import Action from "../types/Action";
 import User from "../types/User";
 import Status from "../types/Status";
-import { SERVER_URL_WITH_HTTP} from "../Values";
+import { SERVER_URL_WITH_HTTP } from "../Values";
+import ReactTooltip from 'react-tooltip';
 
 interface Props {
   content: string,
@@ -14,7 +15,7 @@ interface Props {
   id: string,
   token: string,
   isDeleted: boolean,
-  isHidden: boolean,
+  isInsincere: boolean,
   status: Status,
   user: User,
 }
@@ -76,6 +77,16 @@ class QuestionBar extends React.Component<Props, States> {
           {this.formatInstant(this.props.sent)}
         </div>
         <p className="mt-2 text-xs">{this.props.content}</p>
+
+        {this.props.user === User.HOST && this.props.isInsincere === true ?
+          <button className="my-5 text-xs align-middle text-red-400" >
+            <FontAwesomeIcon icon={faExclamationCircle} />
+            <span className="pl-2">
+              This is marked as spam by system, you can take further action by deleting it.
+            </span>
+          </button>
+          : null
+        }
 
         <div className="w-full flex flex-row-reverse gap-x-3">
 

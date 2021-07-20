@@ -5,24 +5,30 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
 import kotlinx.coroutines.reactive.awaitSingle
+import kotlinx.coroutines.runBlocking
 import org.qask.backend.exceptions.UnauthorizedException
 import org.qask.backend.models.domainModels.Channel
 import org.qask.backend.models.domainModels.Question
 import org.qask.backend.models.enums.Action
 import org.qask.backend.models.enums.Status
-import org.qask.backend.models.viewModels.CreateQuestionVM
-import org.qask.backend.models.viewModels.EditQuestionVM
-import org.qask.backend.models.viewModels.QuestionPayload
+import org.qask.backend.models.viewModels.*
 import org.qask.backend.repositories.ChannelRepository
 import org.qask.backend.repositories.QuestionRepository
 import org.qask.backend.toDomainModel
+import org.qask.backend.toInput
 import org.qask.backend.toPayload
 import org.qask.backend.toPayloads
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Primary
+import org.springframework.kafka.annotation.KafkaListener
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+
 
 @ExperimentalCoroutinesApi
 @Primary
@@ -77,9 +83,11 @@ class ReactiveQuestionService(
 
         val channelId = channel.id!!
 
-        // TODO: validate the question here
         val savedQuestion = questionRepository.insert(createQuestionVM.toDomainModel(channelId = channelId))
             .awaitSingle()
+
+        // post to kafka queue for inference
+        sendQuestionProducer(savedQuestion)
 
         savedQuestion.pushQuestion(channelId = channelId)
     }
@@ -87,6 +95,42 @@ class ReactiveQuestionService(
     suspend fun Question.pushQuestion(channelId: String) {
         val payload = this.toPayload()
         channelsMap[channelId]?.emit(payload)
+    }
+
+    fun Question.pushQuestionBlock(channelId: String) {
+        val payload = this.toPayload()
+        runBlocking {
+            channelsMap[channelId]?.emit(payload)
+        }
+    }
+
+    @KafkaListener(
+        topics = ["\${insincere.questions.topic.name}"],
+        groupId = "insincere-question-spring-consumer",
+        containerFactory = "insincereQuestionListenerContainerFactory"
+    )
+    fun listenInsincereQuestionConsumer(@Payload outputs: List<QuestionInferOutput>) {
+        for (output in outputs) {
+            val entity = questionRepository.findById(output.id).block()
+            if (entity != null) {
+                println("Score for question id #${entity.id}: ${output.isInsincereScore}")
+                entity.isInsincere = output.isInsincereScore > 0.35
+                val savedQuestion = questionRepository.save(entity).block()
+                savedQuestion?.pushQuestionBlock(output.channelId)
+            }
+        }
+    }
+
+
+    @Autowired
+    lateinit var questionInputTemplate: KafkaTemplate<String, QuestionInput>
+
+    @Value(value = "\${questions.topic.name}")
+    lateinit var questionsTopic: String
+
+    suspend fun sendQuestionProducer(question: Question) {
+        println("Sending for question id #${question.id} for inference")
+        questionInputTemplate.send(questionsTopic, question.toInput())
     }
 
     override suspend fun hostEdit(editQuestionVM: EditQuestionVM) {

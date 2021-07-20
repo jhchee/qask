@@ -6,7 +6,7 @@ interface QuestionPayload {
     likeCount: number,
     sent: string,
     isDeleted: boolean,
-    isHidden: boolean,
+    isInsincere: boolean,
     status: Status
     id: string,
 }

@@ -37,10 +37,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-rsocket")
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
     // kotlin coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka")
 
     // mongo
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
